@@ -1,32 +1,29 @@
-using HaberPortalı_MVC.Models;
+using HaberPortal_MVC.Models;
 using Microsoft.AspNetCore.Mvc;
-using System.Diagnostics;
+using Newtonsoft.Json;
+using System.Net.Http;
 
-namespace HaberPortalı_MVC.Controllers
+namespace HaberPortal_MVC.Controllers
 {
     public class HomeController : Controller
     {
-        private readonly ILogger<HomeController> _logger;
+        private readonly IHttpClientFactory _httpClientFactory;
+        private readonly string _apiUrl;
 
-        public HomeController(ILogger<HomeController> logger)
+        public HomeController(IHttpClientFactory httpClientFactory, IConfiguration configuration)
         {
-            _logger = logger;
+            _httpClientFactory = httpClientFactory;
+            _apiUrl = configuration["ApiUrl"];
         }
 
-        public IActionResult Index()
+        public async Task<IActionResult> Details(int id)
         {
-            return View();
+            var client = _httpClientFactory.CreateClient();
+            var response = await client.GetStringAsync($"{_apiUrl}/Haber/{id}");
+
+            var haber = JsonConvert.DeserializeObject<HaberDetayDTO>(response);
+            return View(haber);
         }
 
-        public IActionResult Privacy()
-        {
-            return View();
-        }
-
-        [ResponseCache(Duration = 0, Location = ResponseCacheLocation.None, NoStore = true)]
-        public IActionResult Error()
-        {
-            return View(new ErrorViewModel { RequestId = Activity.Current?.Id ?? HttpContext.TraceIdentifier });
-        }
     }
 }

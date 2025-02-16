@@ -1,0 +1,57 @@
+﻿@model HaberDTO
+
+@{
+    ViewData["Title"] = "Yeni Haber Ekle";
+}
+
+<h1>Yeni Haber Ekle</h1>
+
+<form id="createForm">
+    <div class="form-group">
+        <label for="Baslik">Başlık</label>
+        <input type="text" class="form-control" id="Baslik" name="Baslik" required>
+    </div>
+    <div class="form-group">
+        <label for="Icerik">İçerik</label>
+        <textarea class="form-control" id="Icerik" name="Icerik" required></textarea>
+    </div>
+    <div class="form-group">
+        <label for="KategoriId">Kategori</label>
+        <input type="number" class="form-control" id="KategoriId" name="KategoriId" required>
+    </div>
+    <div class="form-group">
+        <label for="ResimUrl">Resim URL</label>
+        <input type="text" class="form-control" id="ResimUrl" name="ResimUrl">
+    </div>
+    <div class="form-group">
+        <label for="YayinlanmaTarihi">Yayınlanma Tarihi</label>
+        <input type="date" class="form-control" id="YayinlanmaTarihi" name="YayinlanmaTarihi" required>
+    </div>
+    <button type="submit" class="btn btn-success">Kaydet</button>
+</form>
+
+<a href="@Url.Action("Index")" class="btn btn-primary">Geri Dön</a>
+
+<script>
+    $('#createForm').submit(function (e) {
+        e.preventDefault();
+
+        var haber = {
+            Baslik: $('#Baslik').val(),
+            Icerik: $('#Icerik').val(),
+            KategoriId: $('#KategoriId').val(),
+            ResimUrl: $('#ResimUrl').val(),
+            YayinlanmaTarihi: $('#YayinlanmaTarihi').val()
+        };
+
+        $.ajax({
+            url: '@Url.Action("Create", "AdminHaber")',
+            method: 'POST',
+            contentType: 'application/json',
+            data: JSON.stringify(haber),
+            success: function () {
+                window.location.href = '@Url.Action("Index")';
+            }
+        });
+    });
+</script>

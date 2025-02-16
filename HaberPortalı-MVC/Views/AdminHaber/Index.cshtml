@@ -1,0 +1,62 @@
+﻿@model IEnumerable<HaberDTO>
+
+@{
+    ViewData["Title"] = "Haberler";
+}
+
+<h1>Haberler</h1>
+
+<table class="table" id="haberTable">
+    <thead>
+        <tr>
+            <th>Başlık</th>
+            <th>İçerik</th>
+            <th>Kategori</th>
+            <th>Resim URL</th>
+            <th>Yayınlanma Tarihi</th>
+            <th>İşlemler</th>
+        </tr>
+    </thead>
+    <tbody>
+    </tbody>
+</table>
+
+<a href="@Url.Action("Create")" class="btn btn-success">Yeni Haber Ekle</a>
+
+<script>
+    $(document).ready(function () {
+        $.ajax({
+            url: '@Url.Action("GetAllHaber", "AdminHaber")',
+            method: 'GET',
+            success: function (data) {
+                var rows = '';
+                data.forEach(function (haber) {
+                    rows += `<tr>
+                                <td>${haber.Baslik}</td>
+                                <td>${haber.Icerik}</td>
+                                <td>${haber.KategoriId}</td>
+                                <td>${haber.ResimUrl}</td>
+                                <td>${new Date(haber.YayinlanmaTarihi).toLocaleDateString()}</td>
+                                <td>
+                                    <a href="/AdminHaber/Edit/${haber.Id}" class="btn btn-primary">Düzenle</a>
+                                    <button class="btn btn-danger" onclick="deleteHaber(${haber.Id})">Sil</button>
+                                </td>
+                            </tr>`;
+                });
+                $('#haberTable tbody').html(rows);
+            }
+        });
+    });
+
+    function deleteHaber(id) {
+        if (confirm("Bu haberi silmek istediğinizden emin misiniz?")) {
+            $.ajax({
+                url: '/AdminHaber/Delete/' + id,
+                method: 'POST',
+                success: function () {
+                    location.reload();
+                }
+            });
+        }
+    }
+</script>

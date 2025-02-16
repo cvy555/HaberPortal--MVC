@@ -1,0 +1,34 @@
+﻿@model HaberDTO
+
+@{
+    ViewData["Title"] = "Haber Düzenle";
+}
+
+<h1>Haber Düzenle</h1>
+
+<form asp-action="Update" method="post">
+    <input type="hidden" name="Id" value="@Model.Id">
+    <div class="form-group">
+        <label for="Baslik">Başlık</label>
+        <input type="text" class="form-control" id="Baslik" name="Baslik" value="@Model.Baslik" required>
+    </div>
+    <div class="form-group">
+        <label for="Icerik">İçerik</label>
+        <textarea class="form-control" id="Icerik" name="Icerik" required>@Model.Icerik</textarea>
+    </div>
+    <div class="form-group">
+        <label for="KategoriId">Kategori</label>
+        <input type="number" class="form-control" id="KategoriId" name="KategoriId" value="@Model.KategoriId" required>
+    </div>
+    <div class="form-group">
+        <label for="ResimUrl">Resim URL</label>
+        <input type="text" class="form-control" id="ResimUrl" name="ResimUrl" value="@Model.ResimUrl">
+    </div>
+    <div class="form-group">
+        <label for="YayinlanmaTarihi">Yayınlanma Tarihi</label>
+        <input type="date" class="form-control" id="YayinlanmaTarihi" name="YayinlanmaTarihi" value="@Model.YayinlanmaTarihi.ToString("yyyy-MM-dd")" required>
+    </div>
+    <button type="submit" class="btn btn-success">Kaydet</button>
+</form>
+
+<a href="@Url.Action("Index")" class="btn btn-primary">Geri Dön</a>

@@ -1,0 +1,14 @@
+﻿@model HaberDTO
+
+@{
+    ViewData["Title"] = "Haber Sil";
+}
+
+<h1>Haber Sil</h1>
+
+<form asp-action="Delete" method="post">
+    <input type="hidden" name="Id" value="@Model.Id">
+    <p>Bu haberi silmek istediğinizden emin misiniz?</p>
+    <button type="submit" class="btn btn-danger">Sil</button>
+    <a href="@Url.Action("Index")" class="btn btn-primary">Geri Dön</a>
+</form>
